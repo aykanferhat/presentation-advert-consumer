@@ -12,8 +12,8 @@ import (
 
 func InitializeCommandHandler(
 	advertApiClient client.AdvertApiClient,
-	categoryRepository *repository.CategoryRepository,
-	advertRepository *repository.AdvertRepository,
+	categoryRepository *repository.CategoryElasticRepository,
+	advertRepository *repository.AdvertElasticRepository,
 	categoryCacheService cacheservice.CategoryCacheService,
 ) (*handlers.CommandHandler, error) {
 	tracer := []tracers.Tracer{

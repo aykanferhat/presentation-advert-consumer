@@ -10,38 +10,38 @@ import (
 	"presentation-advert-consumer/model/model_repository"
 )
 
-type CategoryRepository struct {
-	elastic.BaseGenericRepository[string, model_repository.Category]
+type AdvertElasticRepository struct {
+	elastic.BaseGenericRepository[string, model_repository.Advert]
 }
 
-func NewCategoryRepository(elasticClientMap elasticv7.ClusterClientMap, clusterName string, indexName string) (*CategoryRepository, error) {
+func NewAdvertElasticRepository(elasticClientMap elasticv7.ClusterClientMap, clusterName string, indexName string) (*AdvertElasticRepository, error) {
 	if client, exists := elasticClientMap[clusterName]; exists {
-		return &CategoryRepository{
-			BaseGenericRepository: elasticv7.NewBaseGenericRepository(client, indexName, mapToEventForCategory, mapToIdForCategory),
+		return &AdvertElasticRepository{
+			BaseGenericRepository: elasticv7.NewBaseGenericRepository(client, indexName, mapToEventForAdvert, mapToIdForAdvert),
 		}, nil
 	}
 	return nil, custom_error.NewConfigNotFoundErr("elastic client not found")
 }
 
-func (repository *CategoryRepository) Save(ctx context.Context, model *model_repository.Category) error {
+func (repository *AdvertElasticRepository) Save(ctx context.Context, model *model_repository.Advert) error {
 	id := fmt.Sprint(model.Id)
 	return repository.IndexDocument(ctx, &elastic.IndexDocument{Id: id, Routing: id, Body: model})
 }
 
-func (repository *CategoryRepository) GetById(ctx context.Context, id int64) (*model_repository.Category, error) {
+func (repository *AdvertElasticRepository) GetById(ctx context.Context, id int64) (*model_repository.Advert, error) {
 	return repository.BaseGenericRepository.GetById(ctx, fmt.Sprint(id), "")
 }
 
-func mapToIdForCategory(searchHit *elastic.SearchHit) (string, error) {
+func mapToIdForAdvert(searchHit *elastic.SearchHit) (string, error) {
 	return searchHit.Id, nil
 }
 
-func mapToEventForCategory(searchHit *elastic.SearchHit) (string, *model_repository.Category, error) {
+func mapToEventForAdvert(searchHit *elastic.SearchHit) (string, *model_repository.Advert, error) {
 	id, err := mapToIdForCategory(searchHit)
 	if err != nil {
 		return "", nil, err
 	}
-	var event model_repository.Category
+	var event model_repository.Advert
 	if err := custom_json.Unmarshal(searchHit.Source, &event); err != nil {
 		return "", nil, err
 	}

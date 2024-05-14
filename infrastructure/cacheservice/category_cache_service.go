@@ -12,11 +12,11 @@ import (
 
 type categoryCacheService struct {
 	inMemCache         *cache.Cache
-	categoryRepository *repository.CategoryRepository
+	categoryRepository *repository.CategoryElasticRepository
 }
 
 func NewCategoryCacheService(
-	categoryRepository *repository.CategoryRepository,
+	categoryRepository *repository.CategoryElasticRepository,
 ) cacheservice.CategoryCacheService {
 	return &categoryCacheService{
 		inMemCache:         cache.New(72*time.Hour, 1*time.Hour),

@@ -40,17 +40,17 @@ func main() {
 		e.Logger.Fatal(err)
 	}
 
-	categoryRepository, err := repository.NewCategoryRepository(elasticClientMap, "local", "categories")
+	categoryElasticRepository, err := repository.NewCategoryElasticRepository(elasticClientMap, "local", "categories")
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
-	advertRepository, err := repository.NewAdvertRepository(elasticClientMap, "local", "adverts")
+	advertElasticRepository, err := repository.NewAdvertElasticRepository(elasticClientMap, "local", "adverts")
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
 
 	// Cache Service
-	categoryCacheService := cacheservice.NewCategoryCacheService(categoryRepository)
+	categoryCacheService := cacheservice.NewCategoryCacheService(categoryElasticRepository)
 
 	// Client
 	advertApiClient, err := advert_api.NewAdvertApiClient(clientConfigMap, "presentation-advert-consumer")
@@ -65,7 +65,7 @@ func main() {
 	}
 	println(producers)
 
-	commandHandler, err := handlers.InitializeCommandHandler(advertApiClient, categoryRepository, advertRepository, categoryCacheService)
+	commandHandler, err := handlers.InitializeCommandHandler(advertApiClient, categoryElasticRepository, advertElasticRepository, categoryCacheService)
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
@@ -77,7 +77,7 @@ func main() {
 		},
 		{
 			ConfigName: "categoryUpdated",
-			Consumer:   consumers.NewCategoryEventConsumer(commandHandler),
+			Consumer:   consumers.NewCategoryEventConsumer(commandHandler, categoryCacheService),
 		},
 	}
 	consumerGroups, errorConsumers, err := kafka.NewConsumerBuilder(clusterConfigMap, consumerConfig, consumersList).
