@@ -1,0 +1,6 @@
+advertApiClient:
+  url: "http://localhost:8080"
+  maxConnections: 1000
+  maxIdleConDuration: 1s
+  readtimeout: 5s
+  writetimeout: 5s

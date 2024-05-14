@@ -1,0 +1,3 @@
+reindexInternationalContentHigh:
+  name: product.international.content-consumer.reindex-international-content-high.0
+  cluster: "local"

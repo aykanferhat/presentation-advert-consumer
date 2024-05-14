@@ -1,0 +1,7 @@
+local:
+  maxIdleConnPerHost: 100
+  maxIdleConnDuration: "1m"
+  discoverNodesOnStart: true
+  discoverNodesInterval: "30s"
+  addresses:
+    http://localhost:9200
