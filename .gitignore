@@ -21,6 +21,3 @@ coupon/log/
 venv
 
 *.zip
-
-/configs/
-/configs_prod/
