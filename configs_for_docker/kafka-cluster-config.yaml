@@ -1,0 +1,12 @@
+local:
+  clientId: "secondhand-advert-api-consumer"
+  brokers:
+    kafka:9092
+  version: "2.2.0"
+  errorConfig:
+    groupId: "secondhand-advert-api.error-consumer.0"
+    cron: "0 */1 * * *"
+    maxErrorCount: 3
+    closeConsumerWhenThereIsNoMessage: "10m"
+    closeConsumerWhenMessageIsNew: "20m"
+    maxProcessingTime: "10s"

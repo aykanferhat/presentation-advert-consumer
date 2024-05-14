@@ -1,0 +1,18 @@
+advertUpdated:
+  groupId: secondhand.advert-api.advert-events.0.consumer.0
+  name: secondhand.advert-api.advert-events.0
+  retry: secondhand.advert-api.advert-events.0.retry.0
+  error: secondhand.advert-api.error.0
+  maxProcessingTime: "5m"
+  retryCount: 2
+  cluster: "local"
+  offsetInitial: newest
+categoryUpdated:
+  groupId: secondhand.advert-api.category-events.0.consumer.0
+  name: secondhand.advert-api.category-events.0
+  retry: secondhand.advert-api.category-events.0.retry.0
+  error: secondhand.advert-api.error.0
+  maxProcessingTime: "5m"
+  retryCount: 2
+  cluster: "local"
+  offsetInitial: newest
