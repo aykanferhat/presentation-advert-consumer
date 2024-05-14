@@ -31,10 +31,14 @@ func (handler *indexCategoryCommandHandler) Handle(ctx context.Context, command 
 		return err
 	}
 	category := &model_repository.Category{
-		Id:        command.Id,
-		Name:      categoryResponse.Name,
-		Version:   categoryResponse.Version,
-		IndexedAt: time.Now(),
+		Id:               command.Id,
+		Name:             categoryResponse.Name,
+		Version:          categoryResponse.Version,
+		CreatedBy:        categoryResponse.CreatedBy,
+		CreationDate:     categoryResponse.CreationDate,
+		ModifiedBy:       categoryResponse.ModifiedBy,
+		LastModifiedDate: categoryResponse.LastModifiedDate,
+		IndexedAt:        time.Now(),
 	}
 	return handler.categoryRepository.Save(ctx, category)
 }

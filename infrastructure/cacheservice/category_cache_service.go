@@ -34,6 +34,11 @@ func (service *categoryCacheService) GetById(ctx context.Context, id int64) (*mo
 		categoryName := &model_cache.Category{
 			Id:               category.Id,
 			Name:             category.Name,
+			Version:          category.Version,
+			CreatedBy:        category.CreatedBy,
+			CreationDate:     category.CreationDate,
+			ModifiedBy:       category.ModifiedBy,
+			LastModifiedDate: category.LastModifiedDate,
 			CacheUpdatedDate: time.Now(),
 		}
 		service.inMemCache.Set(fmt.Sprint(id), categoryName, 0)

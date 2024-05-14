@@ -38,15 +38,22 @@ func (handler *indexAdvertCommandHandler) Handle(ctx context.Context, command *c
 		return err
 	}
 	advert := &model_repository.Advert{
-		Id:          advertResponse.Id,
-		Title:       advertResponse.Title,
-		Description: advertResponse.Description,
-		Version:     advertResponse.Version,
+		Id:               advertResponse.Id,
+		Title:            advertResponse.Title,
+		Description:      advertResponse.Description,
+		Version:          advertResponse.Version,
+		CreatedBy:        advertResponse.CreatedBy,
+		CreationDate:     advertResponse.CreationDate,
+		ModifiedBy:       advertResponse.ModifiedBy,
+		LastModifiedDate: advertResponse.LastModifiedDate,
 		Category: model_repository.AdvertCategory{
-			Id:      categoryResponse.Id,
-			Name:    categoryResponse.Name,
-			Version: categoryResponse.Version,
-		},
+			Id:               categoryResponse.Id,
+			Name:             categoryResponse.Name,
+			Version:          categoryResponse.Version,
+			CreatedBy:        categoryResponse.CreatedBy,
+			CreationDate:     categoryResponse.CreationDate,
+			ModifiedBy:       categoryResponse.ModifiedBy,
+			LastModifiedDate: categoryResponse.LastModifiedDate},
 	}
 	return handler.advertRepository.Save(ctx, advert)
 }

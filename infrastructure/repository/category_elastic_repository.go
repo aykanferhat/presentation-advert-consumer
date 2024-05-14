@@ -7,6 +7,7 @@ import (
 	"presentation-advert-consumer/infrastructure/configuration/custom_json"
 	"presentation-advert-consumer/infrastructure/configuration/elastic"
 	"presentation-advert-consumer/infrastructure/configuration/elastic/elasticv7"
+	"presentation-advert-consumer/infrastructure/configuration/log"
 	"presentation-advert-consumer/model/model_repository"
 )
 
@@ -25,7 +26,13 @@ func NewCategoryElasticRepository(elasticClientMap elasticv7.ClusterClientMap, c
 
 func (repository *CategoryElasticRepository) Save(ctx context.Context, model *model_repository.Category) error {
 	id := fmt.Sprint(model.Id)
-	return repository.IndexDocument(ctx, &elastic.IndexDocument{Id: id, Routing: id, Body: model})
+	err := repository.IndexDocument(ctx, &elastic.IndexDocument{Id: id, Routing: id, Body: model})
+	if err != nil {
+		log.Errorf("An error occurred when indexing category, id: %d, err: %s", model.Id, err.Error())
+		return err
+	}
+	log.Infof("Indexed category, id: %d", model.Id)
+	return nil
 }
 
 func (repository *CategoryElasticRepository) GetById(ctx context.Context, id int64) (*model_repository.Category, error) {

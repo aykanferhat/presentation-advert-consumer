@@ -7,6 +7,7 @@ import (
 	"presentation-advert-consumer/infrastructure/configuration/custom_json"
 	"presentation-advert-consumer/infrastructure/configuration/elastic"
 	"presentation-advert-consumer/infrastructure/configuration/elastic/elasticv7"
+	"presentation-advert-consumer/infrastructure/configuration/log"
 	"presentation-advert-consumer/model/model_repository"
 )
 
@@ -25,7 +26,13 @@ func NewAdvertElasticRepository(elasticClientMap elasticv7.ClusterClientMap, clu
 
 func (repository *AdvertElasticRepository) Save(ctx context.Context, model *model_repository.Advert) error {
 	id := fmt.Sprint(model.Id)
-	return repository.IndexDocument(ctx, &elastic.IndexDocument{Id: id, Routing: id, Body: model})
+	err := repository.IndexDocument(ctx, &elastic.IndexDocument{Id: id, Routing: id, Body: model})
+	if err != nil {
+		log.Errorf("An error occurred when indexing advert, id: %d, err: %s", model.Id, err.Error())
+		return err
+	}
+	log.Infof("Indexed advert, id: %d", model.Id)
+	return nil
 }
 
 func (repository *AdvertElasticRepository) GetById(ctx context.Context, id int64) (*model_repository.Advert, error) {

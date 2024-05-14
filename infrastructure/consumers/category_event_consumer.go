@@ -7,6 +7,7 @@ import (
 	"presentation-advert-consumer/application/handlers"
 	"presentation-advert-consumer/infrastructure/configuration/custom_json"
 	"presentation-advert-consumer/infrastructure/configuration/kafka"
+	"presentation-advert-consumer/infrastructure/configuration/log"
 	"presentation-advert-consumer/infrastructure/consumers/model"
 )
 
@@ -27,6 +28,7 @@ func (consumer *categoryEventConsumer) Consume(ctx context.Context, msg *kafka.C
 	if err := custom_json.Unmarshal(msg.Value, &event); err != nil {
 		return err
 	}
+	log.Infof("Consumed category event, id: %d, type: %s", event.Id, event.Type)
 	err := consumer.commandHandler.IndexCategory.Handle(ctx, &commands.IndexCategory{Id: event.Id})
 	if err != nil {
 		return err
